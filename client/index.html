@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Проверка истории БУ автотранспорта по Госномеру или VIN коду</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="vh-100">
+    <div class="container mt-5">
+        <h2 class="text-center text-primary fw-bold">Авто Чекер</h2>
+		<h6 class="text-center ">Покажем все что пытались от вас скрыть!</h6>
+        <div class="card mx-auto mt-4 p-4 shadow" style="max-width: 600px;">
+            <h4 class="text-center mb-3">Проверка автомобиля</h4>
+            <ul class="nav nav-tabs mb-3" id="checkTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#vinCheck">VIN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#regNumberCheck">Госномер</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#kuzovCheck">Кузов</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="vinCheck">
+                    <label for="vin" class="form-label">VIN-номер автомобиля:</label>
+                    <input required type="text" id="vin" class="form-control" placeholder="Например: 1GNEK13ZX3R298984">
+                    <button class="btn btn-primary w-100 mt-3" onclick="checkCar(false)">Проверить автомобиль</button>
+                </div>
+                <div class="tab-pane fade" id="regNumberCheck">
+                    <label for="regNumber" class="form-label">Госномер автомобиля:</label>
+                    <input required type="text" id="regNumber" class="form-control" placeholder="Например: А001АА77">
+                    <button class="btn btn-primary w-100 mt-3" onclick="checkCar(false)">Проверить автомобиль</button>
+                </div>
+                <div class="tab-pane fade" id="kuzovCheck">
+                    <label for="kuzov" class="form-label">Номер кузова автомобиля:</label>
+                    <input required type="text" id="kuzov" disabled class="form-control" placeholder="Например: XYZ12-3456789">
+                    <button class="btn btn-primary w-100 mt-3" disabled onclick="checkCar(false)">Скоро появится</button>
+                </div>
+            </div>
+            <div id="loading" class="text-center mt-5 d-none">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p>Загрузка данных...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="car-info" class="container mt-5 d-none">
+        <div class="card p-4 shadow">
+            <div class="d-flex align-items-center mb-3">
+                <img id="car-logo" src="" alt="Логотип" style="height: 40px;">
+                <h3 class="ms-3" id="car-title"></h3>
+            </div>
+            <p class="text-muted">Отчет от <span id="report-date"></span></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Госномер:</strong> <span id="plate-number">Отсутствует</span></p>
+                    <p><strong>Год производства:</strong> <span id="year"></span></p>
+                    <p><strong>Руль:</strong> <span id="steering"></span></p>
+                    <p><strong>Мощность:</strong> <span id="power"></span> л.с.</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>VIN:</strong> <span id="result-vin"></span></p>
+                    <p><strong>Категория ТС:</strong> <span id="category"></span></p>
+                    <p><strong>Двигатель:</strong> <span id="engine"></span></p>
+                    <p><strong>Объем:</strong> <span id="volume"></span> куб. см</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-3 gap-2">
+                <button onclick="createPayment()" id="get-more-car-info" class="btn btn-outline-warning w-100">Получить полный отчет</button>
+                <a target="_blank" href="localStorage.getItem('pdfURL')" id="car-pdf-info" class="btn btn-outline-dark w-100 d-none" download=""><i class="bi bi-filetype-pdf"></i></a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="form.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const vinInput = document.getElementById("vin");
+            const regNumberInput = document.getElementById("regNumber");
+            const checkTabs = document.getElementById("checkTabs");
+
+            checkTabs.addEventListener("click", function (event) {
+                let targetTab = event.target.getAttribute("href");
+                if (targetTab === "#vinCheck") {
+                    regNumberInput.value = "";
+                } else if (targetTab === "#regNumberCheck") {
+                    vinInput.value = "";
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+<style>
+  body {
+background: url(background.jpg) no-repeat;
+background-size: cover;
+}
+  </style>
+
+ <p>
+
+
+ <h6 class="text-center ">Пробивайте историю бу автотранспорта по госномеру, vin коду или номеру кузова. <br>Мы достанем всю информацию и даже ту которую вы сами могли не знать о своем автотранспорте!</h6>
+
+<center><a href="https://avinfoheck.ru/examplePdf.pdf" target="_blank" download="">Скачать пример отчета</a></center>
+
+</p>
+</body>
+</html>

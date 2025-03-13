@@ -1,0 +1,8 @@
+fastapi==0.115.5
+uvicorn==0.32.1
+telethon==1.37.0
+pydantic-settings==2.8.1
+yookassa==3.5.0
+fpdf2==2.8.2
+bs4==0.0.2
+text-generation==0.7.0
