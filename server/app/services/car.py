@@ -190,11 +190,11 @@ async def get_car_full_data(report_uuid: str) -> object:
     return {"status": False, "message": "Ошибка при получении данных"}
 
 
-async def download_image(session, url, save_path, index):
+async def download_image(session, url: str, save_path: str, index: int):
     filename = os.path.join(save_path, f"{index}.jpg")
 
     try:
-        async with session.get(url, proxy=settings.proxy) as response:
+        async with session.get(url) as response:
             if response.status == 200:
                 with open(filename, "wb") as f:
                     f.write(await response.read())
@@ -203,7 +203,6 @@ async def download_image(session, url, save_path, index):
     except Exception as e:
         print(f"Ошибка при загрузке {url}: {e}")
 
-
 async def extract_car_images(images: list, save_path: str):
     if not isinstance(images, list):
         return
@@ -211,5 +210,8 @@ async def extract_car_images(images: list, save_path: str):
     os.makedirs(save_path, exist_ok=True)
 
     async with aiohttp.ClientSession(connector=aiohttp.TCPConnector()) as session:
-        tasks = [download_image(session, img, save_path, idx) for idx, img in enumerate(images)]
+        tasks = [
+            download_image(session, img['uri'], save_path, idx)
+            for idx, img in enumerate(images) if isinstance(img, dict) and 'uri' in img
+        ]
         await asyncio.gather(*tasks)

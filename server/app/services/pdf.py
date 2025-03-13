@@ -2266,14 +2266,14 @@ async def createPDF(json :dict,id:str):
         maxPhoto = len([x for x in p.iterdir() if x.suffix == '.jpg'])
         d = 1
 
-        print("maxPhoto", maxPhoto)
-        print("d", d)
+        # print("maxPhoto", maxPhoto)
+        # print("d", d)
 
         while d <= maxPhoto:
             pdf.set_font('DejaVuSans', '', 8)
             pdf.add_page()
 
-            print(f"id:{id} d:{d}", os.path.exists(f'shared/{id}/image/{d}.jpg'))
+            # print(f"id:{id} d:{d}", os.path.exists(f'shared/{id}/image/{d}.jpg'))
 
             if os.path.exists(f'shared/{id}/image/{d}.jpg'):
                 im1 = Image.open(f'shared/{id}/image/{d}.jpg')

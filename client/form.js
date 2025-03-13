@@ -293,7 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 await checkCar(true)
             } else {
-                showError("Отчет не был сгенерирован, так как вы не оплатили полный отчет.");
+                // showError("Отчет не был сгенерирован, так как вы не оплатили полный отчет.");
+                console.error("Отчет не был сгенерирован, так как вы не оплатили полный отчет.")
+                return
             }
         })
         .catch(error => {
