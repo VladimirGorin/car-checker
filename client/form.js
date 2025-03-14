@@ -14,7 +14,7 @@ function showError(message) {
     setTimeout(() => alertBox.classList.add("d-none"), 5000);
 }
 
-function updateCarInfo(data, plateNumber, isReady) {
+function updateCarInfo(data, isReady) {
     const infoBox = document.getElementById("car-info");
 
     const brandLogo = document.getElementById("car-logo");
@@ -25,6 +25,7 @@ function updateCarInfo(data, plateNumber, isReady) {
     const steeringElem = document.getElementById("steering");
     const powerElem = document.getElementById("power");
     const vinElem = document.getElementById("result-vin");
+    const bodyNumberElem = document.getElementById("body-number");
     const categoryElem = document.getElementById("category");
     const engineElem = document.getElementById("engine");
     const volumeElem = document.getElementById("volume");
@@ -43,7 +44,7 @@ function updateCarInfo(data, plateNumber, isReady) {
                           ${data?.tech_data?.year || "Год неизвестен"}`;
 
     reportDate.innerText = new Date().toLocaleDateString();
-    plateNumberElem.innerText = plateNumber || "Отсутствует";
+    plateNumberElem.innerText = data?.identifiers?.vehicle?.reg_num || "Отсутствует";
     yearElem.innerText = data?.tech_data?.year || "Нет данных";
 
     steeringElem.innerText = data?.tech_data?.wheel?.position
@@ -52,6 +53,7 @@ function updateCarInfo(data, plateNumber, isReady) {
 
     powerElem.innerText = data?.tech_data?.engine?.power?.hp ? `${data.tech_data.engine.power.hp} л.с.` : "Нет данных";
     vinElem.innerText = data?.identifiers?.vehicle?.vin || "Нет VIN";
+    bodyNumberElem.innerText = data?.identifiers?.vehicle?.body || "Нет VIN";
 
     categoryElem.innerText = data?.additional_info?.vehicle?.category?.code
         ? `«${data.additional_info.vehicle.category.code}»`
@@ -77,18 +79,32 @@ async function checkCar(subscription) {
 
     let vinInput = document.getElementById("vin");
     let regNumberInput = document.getElementById("regNumber");
+    let bodyNumberInput = document.getElementById("bodyNumber");
 
     let vinValue = vinInput.value.trim();
     let regNumberValue = regNumberInput.value.trim();
+    let bodyNumberValue = bodyNumberInput.value.trim();
 
-    if (!vinValue && !regNumberValue) {
-        showError("Введите VIN или госномер перед проверкой!");
+    if (!vinValue && !regNumberValue && !bodyNumberValue) {
+        showError("Введите VIN госномер или кузов перед проверкой!");
         loadingElement.classList.add("d-none");
         return;
     }
 
-    let carType = vinValue.length ? "VIN" : "GRZ";
-    let carQuery = vinValue.length ? vinValue : regNumberValue;
+    let carType = "VIN";
+    let carQuery = vinValue;
+
+    if (vinValue.length) {
+        carType = "VIN"
+        carQuery = vinValue
+    } else if (regNumberValue.length) {
+        carType = "GRZ"
+        carQuery = regNumberValue
+    } else if (bodyNumberValue.length) {
+        carType = "BODY"
+        carQuery = bodyNumberValue
+    }
+
 
     const reportUuid = localStorage.getItem("requestUuid");
     // console.log("reportUuid", reportUuid);
@@ -130,15 +146,17 @@ async function checkCar(subscription) {
                 await createPDF(data?.content?.message, requestUuid)
             }
 
-            updateCarInfo(carInfo, regNumberValue, isReportFull);
+            updateCarInfo(carInfo, isReportFull);
 
             vinInput.value = "";
             regNumberInput.value = "";
+            bodyNumberInput.value = "";
+
             localStorage.setItem("carType", carType);
             localStorage.setItem("carQuery", carQuery);
             localStorage.setItem("requestUuid", requestUuid);
 
-            if(subscription){
+            if (subscription) {
                 localStorage.removeItem("paymentId")
             }
         } else {
@@ -281,11 +299,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 let vinInput = document.getElementById("vin");
                 let regNumberInput = document.getElementById("regNumber");
+                let bodyNumberInput = document.getElementById("bodyNumber");
 
                 if (carType === "VIN") {
                     vinInput.value = carQuery
                 } else if (carType === "GRZ") {
                     regNumberInput.value = carQuery
+                } else if (carType === "BODY") {
+                    bodyNumberInput.value = carQuery
                 } else {
                     showError("Ошибка, не удалось получить тип элемента.");
                     return

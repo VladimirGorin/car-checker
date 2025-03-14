@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,10 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body class="vh-100">
     <div class="container mt-5">
         <h2 class="text-center text-primary fw-bold">Авто Чекер</h2>
-		<h6 class="text-center ">Покажем все что пытались от вас скрыть!</h6>
+        <h6 class="text-center ">Покажем все что пытались от вас скрыть!</h6>
         <div class="card mx-auto mt-4 p-4 shadow" style="max-width: 600px;">
             <h4 class="text-center mb-3">Проверка автомобиля</h4>
             <ul class="nav nav-tabs mb-3" id="checkTabs">
@@ -21,7 +23,7 @@
                     <a class="nav-link" data-bs-toggle="tab" href="#regNumberCheck">Госномер</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#kuzovCheck">Кузов</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#bodyNumberCheck">Кузов</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -35,10 +37,11 @@
                     <input required type="text" id="regNumber" class="form-control" placeholder="Например: А001АА77">
                     <button class="btn btn-primary w-100 mt-3" onclick="checkCar(false)">Проверить автомобиль</button>
                 </div>
-                <div class="tab-pane fade" id="kuzovCheck">
-                    <label for="kuzov" class="form-label">Номер кузова автомобиля:</label>
-                    <input required type="text" id="kuzov" disabled class="form-control" placeholder="Например: XYZ12-3456789">
-                    <button class="btn btn-primary w-100 mt-3" disabled onclick="checkCar(false)">Скоро появится</button>
+                <div class="tab-pane fade" id="bodyNumberCheck">
+                    <label for="bodyNumber" class="form-label">Номер кузова автомобиля:</label>
+                    <input required type="text" id="bodyNumber" class="form-control"
+                        placeholder="Например: RN1350007371">
+                    <button class="btn btn-primary w-100 mt-3" onclick="checkCar(false)">Проверить автомобиль</button>
                 </div>
             </div>
             <div id="loading" class="text-center mt-5 d-none">
@@ -64,14 +67,18 @@
                 </div>
                 <div class="col-md-6">
                     <p><strong>VIN:</strong> <span id="result-vin"></span></p>
+                    <p><strong>Номер кузова:</strong> <span id="body-number"></span></p>
                     <p><strong>Категория ТС:</strong> <span id="category"></span></p>
                     <p><strong>Двигатель:</strong> <span id="engine"></span></p>
                     <p><strong>Объем:</strong> <span id="volume"></span> куб. см</p>
                 </div>
             </div>
             <div class="d-flex align-items-center justify-content-between mt-3 gap-2">
-                <button onclick="createPayment()" id="get-more-car-info" class="btn btn-outline-warning w-100">Получить полный отчет</button>
-                <a target="_blank" href="localStorage.getItem('pdfURL')" id="car-pdf-info" class="btn btn-outline-dark w-100 d-none" download="">Скачать файл <i class="bi bi-filetype-pdf"></i></a>
+                <button onclick="createPayment()" id="get-more-car-info" class="btn btn-outline-warning w-100">Получить
+                    полный отчет</button>
+                <a target="_blank" href="localStorage.getItem('pdfURL')" id="car-pdf-info"
+                    class="btn btn-outline-dark w-100 d-none" download="">Скачать файл <i
+                        class="bi bi-filetype-pdf"></i></a>
             </div>
         </div>
     </div>
@@ -84,6 +91,8 @@
         document.addEventListener("DOMContentLoaded", function () {
             const vinInput = document.getElementById("vin");
             const regNumberInput = document.getElementById("regNumber");
+            const bodyNumberInput = document.getElementById("bodyNumber");
+
             const checkTabs = document.getElementById("checkTabs");
 
             checkTabs.addEventListener("click", function (event) {
@@ -92,31 +101,29 @@
                     regNumberInput.value = "";
                 } else if (targetTab === "#regNumberCheck") {
                     vinInput.value = "";
+                } else if (targetTab === "#bodyNumberCheck") {
+                    bodyNumberInput.value = "";
                 }
             });
         });
     </script>
 
+    <style>
+        body {
+            background: url(background.jpg) no-repeat;
+            background-size: cover;
+        }
+    </style>
 
+    <p>
 
+    <h6 class="text-center ">Пробивайте историю бу автотранспорта по госномеру, vin коду или номеру кузова. <br><br>Мы
+        достанем всю информацию и даже ту которую вы сами могли не знать о своем автотранспорте!</h6>
 
+    <center><a href="https://avinfoheck.ru/examplePdf.pdf" target="_blank" download="">Скачать пример отчета</a>
+    </center>
 
-
-
-<style>
-  body {
-background: url(background.jpg) no-repeat;
-background-size: cover;
-}
-  </style>
-
- <p>
-
-
- <h6 class="text-center ">Пробивайте историю бу автотранспорта по госномеру, vin коду или номеру кузова. <br>Мы достанем всю информацию и даже ту которую вы сами могли не знать о своем автотранспорте!</h6>
-
-<center><a href="https://avinfoheck.ru/examplePdf.pdf" target="_blank" download="">Скачать пример отчета</a></center>
-
-</p>
+    </p>
 </body>
+
 </html>
