@@ -19,14 +19,16 @@ async def create_payment(request: CreatePaymentRequest):
             "value": request.amount,
             "currency": "RUB"
         },
-        "payment_method_data": {
-            "type": "bank_card"
-        },
+        # "payment_method_data": {
+        #     "type": "bank_card"
+        # },
         "confirmation": {
             "type": "redirect",
             "return_url": settings.payment_return_url
         },
-        "description": "Order No. 72"
+        "capture": True,
+        "description": f"avinfoheck.ru | Пополнение баланса: {request.amount} руб."
+
     }, idempotence_key)
 
     return {"status": True, "message": payment}
