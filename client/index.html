@@ -9,10 +9,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<body class="vh-100">
+<body style="background: url(background.jpg) no-repeat;
+            background-size: cover;min-height: 100vh;" class="w-100">
+
+    <header class="bg-white w-100 p-3">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div class="w-100">
+                    <h2 class="text-primary fw-bold">Авто Чекер</h2>
+                    <h6 class="text-muted">Покажем все, что пытались от вас скрыть!</h6>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary h-100" data-bs-toggle="modal"
+                        data-bs-target="#reportsModal">Отчеты</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div class="container mt-5">
-        <h2 class="text-center text-primary fw-bold">Авто Чекер</h2>
-        <h6 class="text-center ">Покажем все что пытались от вас скрыть!</h6>
         <div class="card mx-auto mt-4 p-4 shadow" style="max-width: 600px;">
             <h4 class="text-center mb-3">Проверка автомобиля</h4>
             <ul class="nav nav-tabs mb-3" id="checkTabs">
@@ -48,10 +63,25 @@
                 <div class="spinner-border text-primary" role="status"></div>
                 <p>Загрузка данных...</p>
             </div>
+
+            <div>
+                <p>
+
+                <h6>Пробивайте историю бу автотранспорта по госномеру, vin коду или номеру кузова.
+                    <br><br>Мы
+                    достанем всю информацию и даже ту которую вы сами могли не знать о своем автотранспорте!
+                </h6>
+
+                <a class="text-center" href="https://avinfoheck.ru/examplePdf.pdf" target="_blank" download="">Скачать
+                    пример
+                    отчета</a>
+
+                </p>
+            </div>
         </div>
     </div>
 
-    <div id="car-info" class="container mt-5 d-none">
+    <div id="car-info" class="container mt-5 mb-5 d-none">
         <div class="card p-4 shadow">
             <div class="d-flex align-items-center mb-3">
                 <img id="car-logo" src="" alt="Логотип" style="height: 40px;">
@@ -83,33 +113,30 @@
         </div>
     </div>
 
+    <div id="main-loading"
+        class="d-flex position-fixed top-0 w-100 vh-100 bg-white align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <div class="modal modal-xl modal-dialog-scrollable" id="reportsModal" tabindex="-1"
+        aria-labelledby="reportsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportsModalLabel">Ваши отчеты</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div id="reportsModalBody" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="form.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const vinInput = document.getElementById("vin");
-            const regNumberInput = document.getElementById("regNumber");
-            const bodyNumberInput = document.getElementById("bodyNumber");
-
-            const checkTabs = document.getElementById("checkTabs");
-
-            checkTabs.addEventListener("click", function (event) {
-                let targetTab = event.target.getAttribute("href");
-                if (targetTab === "#vinCheck") {
-                    regNumberInput.value = "";
-                } else if (targetTab === "#regNumberCheck") {
-                    vinInput.value = "";
-                } else if (targetTab === "#bodyNumberCheck") {
-                    bodyNumberInput.value = "";
-                }
-            });
-        });
-    </script>
-
-
-    <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function (m, e, t, r, i, k, a) {
             m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
@@ -129,24 +156,6 @@
     <noscript>
         <div><img src="https://mc.yandex.ru/watch/100359972" style="position:absolute; left:-9999px;" alt="" /></div>
     </noscript>
-    <!-- /Yandex.Metrika counter -->
-
-    <style>
-        body {
-            background: url(background.jpg) no-repeat;
-            background-size: cover;
-        }
-    </style>
-
-    <p>
-
-    <h6 class="text-center ">Пробивайте историю бу автотранспорта по госномеру, vin коду или номеру кузова. <br><br>Мы
-        достанем всю информацию и даже ту которую вы сами могли не знать о своем автотранспорте!</h6>
-
-    <center><a href="https://avinfoheck.ru/examplePdf.pdf" target="_blank" download="">Скачать пример отчета</a>
-    </center>
-
-    </p>
 </body>
 
 </html>

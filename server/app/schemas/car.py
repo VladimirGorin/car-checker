@@ -6,6 +6,7 @@ class CarRequest(BaseModel):
     subscription: bool
     car_type: str
     report_uuid: Optional[str] = None
+    user_id: str
 
 class CarResponse(BaseModel):
     content: object

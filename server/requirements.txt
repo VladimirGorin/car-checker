@@ -6,3 +6,4 @@ yookassa==3.5.0
 fpdf2==2.8.2
 bs4==0.0.2
 text-generation==0.7.0
+SQLAlchemy==2.0.39

@@ -297,7 +297,7 @@ async def createPDF(json :dict,id:str):
 
     await asyncio.sleep(0.7)
 
-    jsonContent = json.get('result', {}).get('content', {}).get('content', {})
+    jsonContent = json.get('content', {}).get('content', {})
 
     try:
         model = (jsonContent['tech_data']['brand']['name']['normalized'] if 'normalized' in jsonContent['tech_data']['brand']['name'] else '') +' '+ (jsonContent['tech_data']['model']['name']['normalized'] if 'normalized' in jsonContent['tech_data']['model']['name'] else '')
