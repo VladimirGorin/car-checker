@@ -1,21 +1,7 @@
 const APIUrl = "http://localhost:8001/api";
 
-function sendNotification(text) {
-    if (Notification.permission === "granted") {
-        new Notification("Новое уведомление", { body: text });
-    } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                new Notification("Новое уведомление", { body: text });
-            }
-        });
-    }
-
-}
-
-function getUserId() {
-    return localStorage.getItem("userId")
-}
+// https://avinfoheck.ru/api
+// http://localhost:8001/api
 
 function showError(message) {
     let alertBox = document.getElementById("alert-box");
@@ -29,6 +15,37 @@ function showError(message) {
     alertBox.innerText = message;
     alertBox.classList.remove("d-none");
     setTimeout(() => alertBox.classList.add("d-none"), 5000);
+}
+
+function sendNotification(text) {
+    try {
+        if (Notification.permission === "granted") {
+            navigator.serviceWorker.getRegistration().then(registration => {
+                if (registration) {
+                    registration.showNotification(text, {
+                        body: text,
+                        icon: "/favicon-16x16.png"
+                    });
+                } else {
+                    showError("Service Worker не зарегистрирован");
+                }
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    sendNotification(text);
+                }
+            });
+        }
+    } catch (error) {
+        showError(String(error))
+    }
+}
+
+
+
+function getUserId() {
+    return localStorage.getItem("userId")
 }
 
 function updateCarInfo(data, isReady, pdfURL) {
@@ -101,20 +118,20 @@ async function checkCar(subscription) {
     let regNumberInput = document.getElementById("regNumber");
     let bodyNumberInput = document.getElementById("bodyNumber");
 
-    let vinValue = vinInput.value.trim().toLowerCase();
-    let regNumberValue = regNumberInput.value.trim().toLowerCase();
-    let bodyNumberValue = bodyNumberInput.value.trim().toLowerCase();
+    let vinValue = vinInput.value.trim();
+    let regNumberValue = regNumberInput.value.trim();
+    let bodyNumberValue = bodyNumberInput.value.trim();
 
     function isValidVin(vin) {
-        return /^[A-HJ-NPR-Z0-9]{17}$/i.test(vin);
+        return /^[A-HJ-NPR-Z0-9]{17}$/i.test(vin.toLowerCase());
     }
 
     function isValidRegNumber(regNumber) {
-        return /^[А-ЯЁA-Z]{1,2}\d{3}[А-ЯЁA-Z]{2,3}\d{2,3}$/i.test(regNumber);
+        return /^[А-ЯЁA-Z]{1,2}\d{3}[А-ЯЁA-Z]{2,3}\d{2,3}$/i.test(regNumber.toLowerCase());
     }
 
     function isValidBodyNumber(bodyNumber) {
-        return /^[A-Za-z0-9-]{6,}$/i.test(bodyNumber);
+        return /^[A-Za-z0-9-]{6,}$/i.test(bodyNumber.toLowerCase());
     }
 
     if (!vinValue && !regNumberValue && !bodyNumberValue) {
@@ -567,6 +584,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => {
+                console.log("Service Worker зарегистрирован", reg);
+            })
+            .catch(err => {
+                console.error("Ошибка при регистрации Service Worker:", err);
+            });
+    }
 
     if (Notification.permission === "denied" || Notification.permission === "default") {
         Notification.requestPermission().then(permission => {
