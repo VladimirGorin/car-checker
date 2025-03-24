@@ -1,4 +1,4 @@
-const APIUrl = "http://localhost:8001/api";
+const APIUrl = "https://avinfoheck.ru/api";
 
 // https://avinfoheck.ru/api
 // http://localhost:8001/api
@@ -16,6 +16,11 @@ function showError(message) {
     alertBox.classList.remove("d-none");
     setTimeout(() => alertBox.classList.add("d-none"), 5000);
 }
+
+function scrollToBottom(speed = "smooth") {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: speed });
+}
+
 
 function sendNotification(text) {
     try {
@@ -108,6 +113,8 @@ function updateCarInfo(data, isReady, pdfURL) {
     }
 
     infoBox.classList.remove("d-none");
+
+    scrollToBottom()
 }
 
 async function checkCar(subscription) {
@@ -206,7 +213,6 @@ async function checkCar(subscription) {
         const isReportFull = data?.content?.message?.is_ready && subscription;
 
         if (carInfo) {
-
             let pdfReportURL = "#"
 
             if (isReportFull) {
