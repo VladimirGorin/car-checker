@@ -136,6 +136,7 @@ async def get_car_limited_data(car_type: str, query: str) -> object:
         response = requests.post(url, json=data, headers=headers, proxies=proxies)
         response.raise_for_status()
         response_json = response.json()
+        # print(f"get_car_limited_data response_json {response_json}")
         error = response_json.get("error", {})
 
         if error:

@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from pathlib import Path
 import os
 import json
+import asyncio
 
 router = APIRouter()
 
@@ -29,7 +30,22 @@ async def get_car_data(request: CarRequest):
 
         response = await get_car_full_data(request.report_uuid)
     else:
-        response = await get_car_limited_data(request.car_type, request.query)
+        while True:
+            response = await get_car_limited_data(request.car_type, request.query)
+
+            if response.get("status") is False:
+                break
+
+            response_ready_status = response.get(
+                "message", {}).get("guarantee_status", "unapproved")
+
+            # print("\nget_car_data response", response)
+            # print("response_ready_status\n", response_ready_status)
+
+            if response_ready_status == "approved":
+                break
+            else:
+                await asyncio.sleep(2)
 
     if response.get("status") is False:
         raise HTTPException(
