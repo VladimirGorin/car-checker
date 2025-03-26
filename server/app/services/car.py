@@ -4,11 +4,14 @@ import asyncio
 import os
 from core.config import settings
 
+from services.telegram import send_proxy_error_request
+
 url = settings.car_api
 proxies = {
     "http": settings.proxy,
     "https": settings.proxy,
 }
+
 
 async def get_auth_token(login, password) -> str:
     headers = {
@@ -27,14 +30,25 @@ async def get_auth_token(login, password) -> str:
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, proxies=proxies)
+        response = requests.post(
+            url, json=data, headers=headers, proxies=proxies)
+
         response.raise_for_status()
         response_json = response.json()
         return response_json.get("result", {}).get("token", "")
+
     except requests.exceptions.JSONDecodeError:
         print(f"Ошибка JSON в get_auth_token: {response.text}")
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка запроса в get_auth_token: {e}")
+
+    except requests.exceptions.ProxyError:
+        error_message = "Ошибка: Невозможно подключиться к прокси (407 Proxy Authentication Required). Проверьте логин, пароль и адрес прокси."
+        print(error_message)
+        send_proxy_error_request(error_message)
+
+    except requests.exceptions.ConnectionError:
+        error_message = "Ошибка: Проблема с подключением (сервер недоступен или прокси не отвечает)."
+        print(error_message)
+        send_proxy_error_request(error_message)
 
     return ""
 
@@ -60,7 +74,8 @@ async def create_car_report_uuid(car_type: str, query: str) -> str | None:
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, proxies=proxies)
+        response = requests.post(
+            url, json=data, headers=headers, proxies=proxies)
         response.raise_for_status()
         response_json = response.json()
         return response_json.get("result", {}).get("uuid", "")
@@ -112,10 +127,14 @@ async def update_car_report(report_uuid: str) -> None:
 
 async def get_car_limited_data(car_type: str, query: str) -> object:
     REPORT_UUID = await create_car_report_uuid(car_type, query)
+
+    if not REPORT_UUID:
+        return {"status": False, "message": "Ошибка создания отчёта"}
+
     ACCESS_TOKEN = await get_auth_token(settings.api_login, settings.api_password)
 
-    if not REPORT_UUID or not ACCESS_TOKEN:
-        return {"status": False, "message": "Ошибка аутентификации или создания отчёта"}
+    if not ACCESS_TOKEN:
+        return {"status": False, "message": "Ошибка аутентификации"}
 
     headers = {
         "Accept": "application/json",
@@ -133,7 +152,8 @@ async def get_car_limited_data(car_type: str, query: str) -> object:
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, proxies=proxies)
+        response = requests.post(
+            url, json=data, headers=headers, proxies=proxies)
         response.raise_for_status()
         response_json = response.json()
         # print(f"get_car_limited_data response_json {response_json}")
@@ -174,7 +194,8 @@ async def get_car_full_data(report_uuid: str) -> object:
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, proxies=proxies)
+        response = requests.post(
+            url, json=data, headers=headers, proxies=proxies)
         response.raise_for_status()
         response_json = response.json()
         error = response_json.get("error", {})
@@ -203,6 +224,7 @@ async def download_image(session, url: str, save_path: str, index: int):
                 print(f"Ошибка загрузки {url}: {response.status}")
     except Exception as e:
         print(f"Ошибка при загрузке {url}: {e}")
+
 
 async def extract_car_images(images: list, save_path: str):
     if not isinstance(images, list):
