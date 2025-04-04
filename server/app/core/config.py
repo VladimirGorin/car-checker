@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     telegram_bot_token: str = ""
 
-    proxy: str = "http://nphFWB:XWPLPo@196.19.8.146:8000"
+    proxy: str = "http://jwA63Y:mwtFA2@5.8.13.111:9136"
 
 
     class Config:

@@ -1,0 +1,806 @@
+{
+    "uuid": "8a58d4e2-d0e7-4470-8a46-56c7f3bc58e6",
+    "client_uuid": "7038d0fe-20bc-4015-92d5-c5129dc6d1fa",
+    "content": {
+        "uid": "avtocod_profi_full_report_1GNEK13ZX3R298984@avtocod",
+        "name": "NONAME",
+        "tags": "",
+        "query": {
+            "body": "1GNEK13ZX3R298984",
+            "type": "VIN",
+            "storages": [],
+            "schema_version": "1.0"
+        },
+        "state": {
+            "sources": [
+                {
+                    "_id": "ads.base",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "ads.price",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "ads.price.base",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "arbitration.history",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "av.taxi",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "base",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "carsharing.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "customs.fts",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "dtp.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "fines.registry",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "fssp.base.executive",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "gibdd.dtp",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "gibdd.eaisto",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "gibdd.fines",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "gibdd.history",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "gibdd.restrict",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "gibdd.wanted",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "gibdd.wanted.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "images.archive",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "images.avtonomer",
+                    "state": "ERROR",
+                    "extended_state": "CANCEL"
+                },
+                {
+                    "_id": "insurance.vehicle.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "leasing.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "mileages.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "osago.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "pledge.house",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "recall.campaigns.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "references.base",
+                    "state": "OK",
+                    "extended_state": "SKIP"
+                },
+                {
+                    "_id": "repairs.history.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "restrictions.registry",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "service.history",
+                    "state": "OK",
+                    "extended_state": "OK"
+                },
+                {
+                    "_id": "vin.decoder",
+                    "state": "OK",
+                    "extended_state": "OK"
+                }
+            ]
+        },
+        "comment": "",
+        "content": {
+            "ads": {
+                "history": {
+                    "date": {
+                        "update": "2025-04-01 19:50:51"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "История объявлений"
+                }
+            },
+            "taxi": {
+                "history": {
+                    "count": 0,
+                    "items": [],
+                    "_comment": "Такси"
+                }
+            },
+            "fines": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Штрафы"
+            },
+            "carfax": {
+                "check": {
+                    "_comment": "Данные быстрой проверки на наличие данных у CarFax"
+                },
+                "_comment": "Данные от CarFax"
+            },
+            "images": {
+                "photos": {
+                    "date": [],
+                    "count": 0,
+                    "items": [],
+                    "_comment": "Фотографии ТС"
+                },
+                "_comment": "Изображения, связанные с ТС"
+            },
+            "customs": {
+                "history": {
+                    "date": {
+                        "update": "2025-04-01 19:50:52"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "История по таможне"
+                }
+            },
+            "pledges": {
+                "date": {
+                    "update": "2025-04-01 00:00:00"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Обременения на ТС"
+            },
+            "repairs": {
+                "history": {
+                    "date": {
+                        "update": "2025-04-01 19:50:50"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "История ремонтных работ по страховке"
+                },
+                "_comment": "Ремонтные работы"
+            },
+            "leasings": {
+                "date": {
+                    "update": "2025-04-01 19:50:50"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Лизинг",
+                "used_in_leasing": false
+            },
+            "mileages": {
+                "count": 0,
+                "items": [],
+                "_comment": "Пробеги"
+            },
+            "_metadata": {
+                "_comment": "Мета-данные, не связанные с отчетом",
+                "application": {
+                    "uid": "processing@p-acc-processing-reportfacts-worker-6cc74d444c-kps52",
+                    "version": "91.9.0"
+                }
+            },
+            "accidents": {
+                "history": {
+                    "date": {
+                        "update": "2025-04-01 19:50:51"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "История ДТП"
+                },
+                "insurance": {
+                    "date": {
+                        "update": "2023-04-01 00:00:00"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "История повреждений из страховых компаний"
+                },
+                "statistics": {
+                    "date": [],
+                    "count": 0,
+                    "items": [],
+                    "_comment": "Статистика ДТП"
+                },
+                "has_accidents": false
+            },
+            "calculate": {
+                "tax": {
+                    "moscow": {
+                        "yearly": []
+                    },
+                    "regions": {
+                        "yearly": []
+                    }
+                },
+                "osago": {
+                    "price": {
+                        "moscow": {
+                            "yearly": []
+                        },
+                        "current": {
+                            "city": [],
+                            "region": [],
+                            "yearly": []
+                        },
+                        "moscow_region": {
+                            "yearly": []
+                        }
+                    },
+                    "_comment": "Калькулятор ОСАГО",
+                    "coefficients": {
+                        "regional": []
+                    }
+                },
+                "_comment": "Калькуляторы"
+            },
+            "car_price": {
+                "count": 0,
+                "items": [],
+                "_comment": "Приблизительные стоимости аналогичных автомобилей"
+            },
+            "insurance": {
+                "osago": {
+                    "date": {
+                        "update": "2025-04-01 19:50:49"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "ОСАГО"
+                }
+            },
+            "ownership": {
+                "history": {
+                    "date": {
+                        "update": "2025-04-01 19:50:51"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "usage": [],
+                    "_comment": "История владения"
+                }
+            },
+            "stealings": {
+                "date": {
+                    "update": "2025-04-01 19:50:56"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Проверка на угон",
+                "is_wanted": false
+            },
+            "tech_data": {
+                "body": {
+                    "color": [],
+                    "_comment": "Кузов"
+                },
+                "date": {
+                    "update": "2025-04-01 19:50:52"
+                },
+                "type": {
+                    "_comment": "Тип (Вид) ТС"
+                },
+                "year": 2003,
+                "brand": {
+                    "id": "ID_MARK_CHEVROLET",
+                    "name": {
+                        "original": "Chevrolet",
+                        "normalized": "Chevrolet"
+                    },
+                    "_comment": "Марка",
+                    "logotype": {
+                        "uri": "https://vl.imgix.net/img/chevrolet-logo.png"
+                    }
+                },
+                "drive": {
+                    "_comment": "Привод"
+                },
+                "model": {
+                    "id": "ID_MARK_CHEVROLET_MODEL_TAHOE",
+                    "name": {
+                        "original": "Tahoe",
+                        "normalized": "Tahoe"
+                    },
+                    "_comment": "Модель"
+                },
+                "wheel": {
+                    "_comment": "Рулевое колесо",
+                    "position": "LEFT",
+                    "position_id": "ID_STEERING_WHEEL_TYPE_LEFT",
+                    "position_code": "1"
+                },
+                "engine": {
+                    "fuel": {
+                        "type": "Бензиновый",
+                        "type_id": "ID_ENGINE_TYPE_PETROL"
+                    },
+                    "model": [],
+                    "power": {
+                        "hp": 286,
+                        "kw": 210.35
+                    },
+                    "volume": 5327,
+                    "_comment": "Двигатель",
+                    "standarts": {
+                        "emission": []
+                    }
+                },
+                "weight": {
+                    "_comment": "Масса"
+                },
+                "chassis": {
+                    "_comment": "Шасси"
+                },
+                "_comment": "Характеристики ТС",
+                "filled_by": {
+                    "provider": "VIN_DECODER"
+                },
+                "generations": [],
+                "manufacturer": [],
+                "transmission": {
+                    "_comment": "Трансмиссия"
+                }
+            },
+            "carsharing": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Использование ТС в каршеринге"
+            },
+            "arbitration": {
+                "date": {
+                    "update": "2025-04-01 19:50:50"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Проверка судебных дел"
+            },
+            "identifiers": {
+                "vehicle": {
+                    "vin": "1GNEK13ZX3R298984"
+                },
+                "_comment": "Идентификаторы",
+                "manufacture": []
+            },
+            "report_meta": [],
+            "pledges_nbki": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Обременения на ТС по данным НБКИ"
+            },
+            "restrictions": {
+                "registration_actions": {
+                    "date": {
+                        "update": "2025-04-01 19:50:51"
+                    },
+                    "count": 0,
+                    "items": [],
+                    "_comment": "Ограничения на рег. действия",
+                    "has_restrictions": false
+                },
+                "registration_actions_archive": {
+                    "date": [],
+                    "count": 0,
+                    "items": [],
+                    "_comment": "Архив ограничений на рег. действия"
+                }
+            },
+            "utilizations": {
+                "date": {
+                    "update": "2025-04-01 19:36:05"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Утилизация",
+                "was_utilized": false
+            },
+            "gots_auctions": {
+                "date": [],
+                "items": [],
+                "_comment": "Размещение ТС на аукционах ГОТС"
+            },
+            "market_prices": {
+                "ads": {
+                    "date": {
+                        "update": "2025-04-01 19:50:51"
+                    },
+                    "items": [
+                        {
+                            "_id": 4153160878,
+                            "amount": {
+                                "max": 475000,
+                                "min": 475000,
+                                "optimal": 475000
+                            },
+                            "mileage": 285000,
+                            "currency": {
+                                "type": "RUB"
+                            },
+                            "metadata": {
+                                "functions": [
+                                    {
+                                        "name": "price_mileage",
+                                        "parts": [
+                                            {
+                                                "type": "STRAIGHT_LINE",
+                                                "bounds": {
+                                                    "left": 0
+                                                },
+                                                "description": "y = coefficients[0] + x * coefficients[1]",
+                                                "coefficients": [
+                                                    475000,
+                                                    0
+                                                ]
+                                            }
+                                        ],
+                                        "description": "y = price, x = mileage"
+                                    }
+                                ]
+                            },
+                            "related_ads": [
+                                {
+                                    "geo": {
+                                        "city": "Клин",
+                                        "country": "Россия"
+                                    },
+                                    "uri": "https://auto.ru/cars/used/sale/chevrolet/tahoe/1127491465-c08b6377/",
+                                    "date": {
+                                        "publish": "2025-03-20 08:02:08"
+                                    },
+                                    "price": {
+                                        "amount": 550000,
+                                        "currency": "RUB"
+                                    },
+                                    "vehicle": {
+                                        "body": {
+                                            "type": "Внедорожник 5 дв.",
+                                            "type_id": "ID_BODY_TYPE_SUV"
+                                        },
+                                        "year": 2003,
+                                        "brand": {
+                                            "name": "Chevrolet"
+                                        },
+                                        "drive": {
+                                            "type": "Полный",
+                                            "type_id": "ID_DRIVING_WHEELS_TYPE_ALL"
+                                        },
+                                        "model": {
+                                            "name": "Tahoe"
+                                        },
+                                        "wheel": {
+                                            "position": "LEFT",
+                                            "position_id": "ID_STEERING_WHEEL_TYPE_LEFT"
+                                        },
+                                        "engine": {
+                                            "fuel": {
+                                                "type": "Бензиновый",
+                                                "type_id": "ID_ENGINE_TYPE_PETROL"
+                                            },
+                                            "power": {
+                                                "hp": 288
+                                            },
+                                            "volume": 5300
+                                        },
+                                        "owners": {
+                                            "count": 4
+                                        },
+                                        "mileage": 270000,
+                                        "condition": "Не требует ремонта",
+                                        "transmission": {
+                                            "type": "AUTOMATIC",
+                                            "type_id": "ID_TRANSMISSION_TYPE_AUTOMATIC"
+                                        }
+                                    }
+                                },
+                                {
+                                    "geo": {
+                                        "city": "Новосибирск",
+                                        "country": "Россия"
+                                    },
+                                    "uri": "https://auto.drom.ru/novosibirsk/chevrolet/tahoe/827861979.html?utm_referrer=https://ya.ru/",
+                                    "date": {
+                                        "publish": "2025-03-04 00:00:00"
+                                    },
+                                    "price": {
+                                        "amount": 400000,
+                                        "currency": "RUB"
+                                    },
+                                    "vehicle": {
+                                        "body": {
+                                            "type": "Джип/suv 5 дв.",
+                                            "type_id": "ID_BODY_TYPE_SUV"
+                                        },
+                                        "year": 2003,
+                                        "brand": {
+                                            "name": "Chevrolet"
+                                        },
+                                        "drive": {
+                                            "type": "Полный",
+                                            "type_id": "ID_DRIVING_WHEELS_TYPE_ALL"
+                                        },
+                                        "model": {
+                                            "name": "Tahoe"
+                                        },
+                                        "wheel": {
+                                            "position": "LEFT",
+                                            "position_id": "ID_STEERING_WHEEL_TYPE_LEFT"
+                                        },
+                                        "engine": {
+                                            "fuel": {
+                                                "type": "Бензиновый",
+                                                "type_id": "ID_ENGINE_TYPE_PETROL"
+                                            },
+                                            "power": {
+                                                "hp": 285
+                                            },
+                                            "volume": 5300
+                                        },
+                                        "owners": {
+                                            "count": 6
+                                        },
+                                        "mileage": 300000,
+                                        "transmission": {
+                                            "type": "UNKNOWN",
+                                            "type_id": "ID_TRANSMISSION_TYPE_OTHER"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "_comment": "Рыночная стоимость ТС",
+                "appraisal": {
+                    "date": [],
+                    "amount": [],
+                    "reasons": {
+                        "accidents": [],
+                        "ownerships": []
+                    }
+                }
+            },
+            "commercial_use": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Коммерческое использование ТС"
+            },
+            "pledges_online": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Обременения на ТС Онлайн"
+            },
+            "taxi_analytics": {
+                "probable_use": []
+            },
+            "additional_info": {
+                "driver": {
+                    "mileages": {
+                        "average_annual": {
+                            "is_calculated": false,
+                            "calculation_options": {
+                                "period": [],
+                                "vehicle": [],
+                                "mileages": []
+                            }
+                        }
+                    }
+                },
+                "catalog": {
+                    "rsa": {
+                        "items": []
+                    },
+                    "oats": {
+                        "items": []
+                    },
+                    "tecdoc": {
+                        "items": []
+                    },
+                    "transdekra": {
+                        "items": []
+                    }
+                },
+                "vehicle": {
+                    "sts": {
+                        "date": []
+                    },
+                    "notes": [],
+                    "owner": {
+                        "geo": [],
+                        "taxi_history": {
+                            "probable_use": {
+                                "items": []
+                            },
+                            "taxi_licenses": {
+                                "items": [],
+                                "actuality": []
+                            }
+                        },
+                        "enforcement_proceedings": []
+                    },
+                    "segment": {
+                        "euro": []
+                    },
+                    "category": {
+                        "code": "B",
+                        "description": "Легковые автомобили, небольшие грузовики (до 3,5 тонн)"
+                    },
+                    "passport": {
+                        "org": [],
+                        "date": []
+                    },
+                    "restriction": [],
+                    "modifications": [],
+                    "techreglament_category": []
+                },
+                "_comment": "Дополнительная информация",
+                "identifiers": {
+                    "vin": []
+                }
+            },
+            "driver_licenses": {
+                "date": [],
+                "count": 0,
+                "items": [],
+                "_comment": "Водительские удостоверения"
+            },
+            "service_history": {
+                "date": {
+                    "update": "2025-04-01 19:50:49"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "История дилерского обслуживания"
+            },
+            "diagnostic_cards": {
+                "date": {
+                    "update": "2025-04-01 19:50:51"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Диагностические карты"
+            },
+            "insurance_scores": {
+                "accident_probability": []
+            },
+            "recall_campaigns": {
+                "date": {
+                    "update": "2025-04-01 19:50:50"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Отзывные кампании"
+            },
+            "identifiers_masked": {
+                "vehicle": {
+                    "vin": "1GNE************4"
+                },
+                "_comment": "Маскированные идентификаторы"
+            },
+            "executive_procedures": {
+                "count": 0,
+                "items": [],
+                "_comment": "Исполнительные производства"
+            },
+            "registration_actions": {
+                "date": {
+                    "update": "2025-04-01 19:36:05"
+                },
+                "count": 0,
+                "items": [],
+                "_comment": "Регистрационные действия"
+            }
+        },
+        "active_to": "3000-01-01T00:00:00.000Z",
+        "created_at": "2025-03-08T10:19:10.270Z",
+        "created_by": "system",
+        "domain_uid": "avtocod",
+        "updated_at": "2025-04-01T19:50:58.151Z",
+        "updated_by": "system",
+        "vehicle_id": "1GNEK13ZX3R298984",
+        "active_from": "1900-01-01T00:00:00.000Z",
+        "progress_ok": 25,
+        "requested_at": "2025-04-01T19:50:49.165Z",
+        "progress_wait": 0,
+        "progress_error": 6,
+        "report_type_uid": "avtocod_profi_full_report@avtocod",
+        "last_generation_stat": {
+            "duration": 7940,
+            "start_time": "2025-04-01T19:50:49.165Z",
+            "complete_time": "2025-04-01T19:50:57.105Z"
+        }
+    },
+    "is_ready": true,
+    "is_completed": true,
+    "auto_index": -1,
+    "analytical_mileage": 0,
+    "guarantee_status": "approved",
+    "generation_start_time": "2025-04-01T19:50:49+00:00",
+    "additional_blocks": [],
+    "is_test": false,
+    "created_at": "2025-04-01T19:50:11+00:00",
+    "updated_at": "2025-04-01T19:51:49+00:00"
+}

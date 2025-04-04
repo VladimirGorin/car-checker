@@ -29,27 +29,15 @@ async def get_auth_token(login, password) -> str:
         "params": {"email": login, "password": password},
     }
 
-    try:
-        response = requests.post(
-            url, json=data, headers=headers, proxies=proxies)
-
-        response.raise_for_status()
-        response_json = response.json()
-        return response_json.get("result", {}).get("token", "")
-
-    except requests.exceptions.JSONDecodeError:
-        print(f"Ошибка JSON в get_auth_token: {response.text}")
-
-    except requests.exceptions.ProxyError:
-        error_message = "Ошибка: Невозможно подключиться к прокси (407 Proxy Authentication Required). Проверьте логин, пароль и адрес прокси."
-        print(error_message)
-        send_proxy_error_request(error_message)
-
-    except requests.exceptions.ConnectionError:
-        error_message = "Ошибка: Проблема с подключением (сервер недоступен или прокси не отвечает)."
-        print(error_message)
-        send_proxy_error_request(error_message)
-
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.post(url, json=data, headers=headers, proxy=settings.proxy) as response:
+                response_json = await response.json()
+                return response_json.get("result", {}).get("token", "")
+        except aiohttp.ContentTypeError:
+            print(f"Ошибка JSON в get_auth_token: {await response.text()}")
+        except aiohttp.ClientError as e:
+            print(f"Ошибка запроса в get_auth_token: {e}")
     return ""
 
 
@@ -73,18 +61,55 @@ async def create_car_report_uuid(car_type: str, query: str) -> str | None:
         "params": {"query": query, "type": car_type},
     }
 
-    try:
-        response = requests.post(
-            url, json=data, headers=headers, proxies=proxies)
-        response.raise_for_status()
-        response_json = response.json()
-        return response_json.get("result", {}).get("uuid", "")
-    except requests.exceptions.JSONDecodeError:
-        print(f"Ошибка JSON в create_car_report_uuid: {response.text}")
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка запроса в create_car_report_uuid: {e}")
-
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.post(url, json=data, headers=headers, proxy=settings.proxy) as response:
+                response_json = await response.json()
+                return response_json.get("result", {}).get("uuid", "")
+        except aiohttp.ContentTypeError:
+            print(f"Ошибка JSON в create_car_report_uuid: {await response.text()}")
+        except aiohttp.ClientError as e:
+            print(f"Ошибка запроса в create_car_report_uuid: {e}")
     return None
+
+
+async def get_car_limited_data(car_type: str, query: str) -> object:
+    REPORT_UUID = await create_car_report_uuid(car_type, query)
+    if not REPORT_UUID:
+        return {"status": False, "message": "Ошибка создания отчёта"}
+
+    ACCESS_TOKEN = await get_auth_token(settings.api_login, settings.api_password)
+    if not ACCESS_TOKEN:
+        return {"status": False, "message": "Ошибка аутентификации"}
+
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Referer": "https://profi.avtocod.ru/",
+        "Origin": "https://profi.avtocod.ru/"
+    }
+
+    data = {
+        "jsonrpc": "2.0",
+        "id": 9,
+        "method": "report.get",
+        "params": {"uuid": REPORT_UUID},
+    }
+
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.post(url, json=data, headers=headers, proxy=settings.proxy) as response:
+                response_json = await response.json()
+                error = response_json.get("error", {})
+                if error:
+                    return {"status": False, "message": f"Ошибка! {error}"}
+                return {"status": True, "message": response_json.get("result", response_json)}
+        except aiohttp.ContentTypeError:
+            print(f"Ошибка JSON в get_car_limited_data: {await response.text()}")
+        except aiohttp.ClientError as e:
+            print(f"Ошибка запроса в get_car_limited_data: {e}")
+    return {"status": False, "message": "Ошибка при получении данных"}
 
 
 async def update_car_report(report_uuid: str) -> None:
@@ -123,52 +148,6 @@ async def update_car_report(report_uuid: str) -> None:
             print(f"Ошибка JSON в update_car_report: {await response.text()}")
         except aiohttp.ClientError as e:
             print(f"Ошибка запроса в update_car_report: {e}")
-
-
-async def get_car_limited_data(car_type: str, query: str) -> object:
-    REPORT_UUID = await create_car_report_uuid(car_type, query)
-
-    if not REPORT_UUID:
-        return {"status": False, "message": "Ошибка создания отчёта"}
-
-    ACCESS_TOKEN = await get_auth_token(settings.api_login, settings.api_password)
-
-    if not ACCESS_TOKEN:
-        return {"status": False, "message": "Ошибка аутентификации"}
-
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
-        "Referer": "https://profi.avtocod.ru/",
-        "Origin": "https://profi.avtocod.ru/"
-    }
-
-    data = {
-        "jsonrpc": "2.0",
-        "id": 9,
-        "method": "report.get",
-        "params": {"uuid": REPORT_UUID},
-    }
-
-    try:
-        response = requests.post(
-            url, json=data, headers=headers, proxies=proxies)
-        response.raise_for_status()
-        response_json = response.json()
-        # print(f"get_car_limited_data response_json {response_json}")
-        error = response_json.get("error", {})
-
-        if error:
-            return {"status": False, "message": f"Ошибка! {error}"}
-
-        return {"status": True, "message": response_json.get("result", response_json)}
-    except requests.exceptions.JSONDecodeError:
-        print(f"Ошибка JSON в get_car_limited_data: {response.text}")
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка запроса в get_car_limited_data: {e}")
-
-    return {"status": False, "message": "Ошибка при получении данных"}
 
 
 async def get_car_full_data(report_uuid: str) -> object:
@@ -211,7 +190,6 @@ async def get_car_full_data(report_uuid: str) -> object:
 
     return {"status": False, "message": "Ошибка при получении данных"}
 
-
 async def download_image(session, url: str, save_path: str, index: int):
     filename = os.path.join(save_path, f"{index}.jpg")
 
@@ -224,7 +202,6 @@ async def download_image(session, url: str, save_path: str, index: int):
                 print(f"Ошибка загрузки {url}: {response.status}")
     except Exception as e:
         print(f"Ошибка при загрузке {url}: {e}")
-
 
 async def extract_car_images(images: list, save_path: str):
     if not isinstance(images, list):
