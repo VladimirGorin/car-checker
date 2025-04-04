@@ -1,4 +1,4 @@
-const APIUrl = "http://localhost:8001/api";
+const APIUrl = "https://avinfoheck.ru/api";
 
 // https://avinfoheck.ru/api
 // http://localhost:8001/api
