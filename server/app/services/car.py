@@ -37,13 +37,13 @@ async def get_auth_token(login, password) -> str:
                 response_json = await response.json()
                 return response_json.get("result", {}).get("token", "")
         except aiohttp.ContentTypeError:
-            print(f"Ошибка JSON в get_auth_token: {await response.text()}")
+            send_proxy_error_request(f"Ошибка JSON в get_auth_token: {await response.text()}")
         except aiohttp.ClientError as e:
-            print(f"Ошибка запроса в get_auth_token: {e}")
+            send_proxy_error_request(f"Ошибка запроса в get_auth_token: {e}")
         except aiohttp.ClientConnectionError:
-            print(f"Ошибка соединения с прокси в get_auth_token: Невозможно подключиться к прокси. (Проверьте прокси)")
+            send_proxy_error_request(f"Ошибка соединения с прокси в get_auth_token: Невозможно подключиться к прокси. (Проверьте прокси)")
         except aiohttp.ClientTimeoutError:
-            print(f"Ошибка таймаута при подключении через прокси в get_auth_token: Превышен лимит времени. (Проверьте прокси)")
+            send_proxy_error_request(f"Ошибка таймаута при подключении через прокси в get_auth_token: Превышен лимит времени. (Проверьте прокси)")
     return ""
 
 async def create_car_report_uuid(car_type: str, query: str) -> str | None:
