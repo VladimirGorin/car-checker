@@ -13,6 +13,8 @@ proxies = {
 }
 
 
+import aiohttp
+
 async def get_auth_token(login, password) -> str:
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
@@ -38,8 +40,11 @@ async def get_auth_token(login, password) -> str:
             print(f"Ошибка JSON в get_auth_token: {await response.text()}")
         except aiohttp.ClientError as e:
             print(f"Ошибка запроса в get_auth_token: {e}")
+        except aiohttp.ClientConnectionError:
+            print(f"Ошибка соединения с прокси в get_auth_token: Невозможно подключиться к прокси. (Проверьте прокси)")
+        except aiohttp.ClientTimeoutError:
+            print(f"Ошибка таймаута при подключении через прокси в get_auth_token: Превышен лимит времени. (Проверьте прокси)")
     return ""
-
 
 async def create_car_report_uuid(car_type: str, query: str) -> str | None:
     ACCESS_TOKEN = await get_auth_token(settings.api_login, settings.api_password)
