@@ -32,6 +32,11 @@ function scrollToBottom(speed = "smooth") {
 
 function sendNotification(text) {
     try {
+        if (typeof Notification === "undefined") {
+            console.error("sendNotification Notification не существует")
+            return
+        }
+
         if (Notification.permission === "granted") {
             navigator.serviceWorker.getRegistration().then(registration => {
                 try {
@@ -58,6 +63,7 @@ function sendNotification(text) {
                 }
             });
         }
+
     } catch (error) {
         showError("Ошибка при отправке уведомления: " + error);
     }
@@ -555,12 +561,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
         }
 
-        if (Notification.permission === "denied" || Notification.permission === "default") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "denied") {
-                    showError("Пожалуйста! Включите уведомления  для сайта. В ином случае вы не сможете получать уведомления!")
-                }
-            });
+        if (typeof Notification !== "undefined") {
+            if (Notification.permission === "denied" || Notification.permission === "default") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "denied") {
+                        showError("Пожалуйста! Включите уведомления  для сайта. В ином случае вы не сможете получать уведомления!")
+                    }
+                });
+            }
+        } else {
+            showError("Пожалуйста! Включите уведомления  для сайта. В ином случае вы не сможете получать уведомления!")
         }
 
         await processUserId()
