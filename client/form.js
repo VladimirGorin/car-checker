@@ -1,6 +1,6 @@
-const APIUrl = "https://avinfoheck.ru/api";
+const APIUrl = "https://check-car.pro/api";
 
-// https://avinfoheck.ru/api
+// https://check-car.pro/api
 // http://localhost:8001/api
 
 
@@ -146,8 +146,8 @@ function updateCarInfo(data, isReady, pdfURL) {
 }
 
 async function checkCar(subscription) {
+    const loadingElement = document.getElementById("loading");
     try {
-        const loadingElement = document.getElementById("loading");
         loadingElement.classList.remove("d-none");
 
         let vinInput = document.getElementById("vin");

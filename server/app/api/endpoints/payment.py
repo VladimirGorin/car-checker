@@ -27,7 +27,7 @@ async def create_payment(request: CreatePaymentRequest):
             "return_url": settings.payment_return_url
         },
         "capture": True,
-        "description": f"avinfoheck.ru | Пополнение баланса: {request.amount} руб."
+        "description": f"check-car.pro | Пополнение баланса: {request.amount} руб."
 
     }, idempotence_key)
 

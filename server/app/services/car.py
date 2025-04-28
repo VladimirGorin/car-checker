@@ -15,6 +15,8 @@ proxies = {
 
 import aiohttp
 
+#Ошибка запроса в get_auth_token: Cannot connect to host 45.32.56.105:10020 ssl:default [Connect call failed ('45.32.56.105', 10020)]
+
 async def get_auth_token(login, password) -> str:
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
