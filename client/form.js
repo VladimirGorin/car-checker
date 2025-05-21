@@ -77,6 +77,7 @@ function getUserId() {
         return null;
     }
 }
+
 function updateCarInfo(data, isReady, pdfURL) {
     try {
         const infoBox = document.getElementById("car-info");
@@ -142,6 +143,33 @@ function updateCarInfo(data, isReady, pdfURL) {
         scrollToBottom()
     } catch (error) {
         showError("Ошибка при обновлении информации о машине: " + error);
+    }
+}
+
+async function activateProgressBar() {
+    const progressBar = document.getElementById('progress-bar');
+
+    try {
+
+        progressBar.style.width = '0%';
+        progressBar.classList.remove('bg-danger');
+        progressBar.classList.add('bg-success');
+
+        let progress = 0;
+
+        while (progress < 100) {
+            const increment = Math.floor(Math.random() * 10) + 1;
+            progress = Math.min(progress + increment, 100);
+
+            progressBar.style.width = progress + '%';
+
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
+        }
+
+
+    } catch (error) {
+        progressBar.classList.add('bg-danger');
+        showError("Ошибка при загрузке прогресс-бара: " + error.message);
     }
 }
 
@@ -221,11 +249,15 @@ async function checkCar(subscription) {
             body: requestBody
         });
 
+        await activateProgressBar()
+
         if (!response.ok) {
             let errorMessage = "Произошла ошибка";
 
             try {
                 const data = await response.json();
+
+
                 if (data.detail) {
                     errorMessage = data.detail;
                 }
@@ -236,6 +268,7 @@ async function checkCar(subscription) {
         }
 
         const data = await response.json();
+
         const carInfo = data?.content?.message?.content?.content;
         const requestUuid = data?.content?.message?.uuid;
         const isReportFull = data?.content?.message?.is_ready && subscription;
@@ -282,11 +315,18 @@ async function createPayment() {
             body: requestBody
         });
 
+        await activateProgressBar()
+
+
         if (!response.ok) {
             throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
         }
 
         const data = await response.json();
+        const paymentId = data?.message?.id
+
+        localStorage.setItem("paymentId", paymentId)
+
         window.location.href = data?.message?.confirmation?.confirmation_url || "#";
     } catch (error) {
         showError("Ошибка при создании платежа: " + error);
@@ -311,6 +351,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 payment_id: paymentId,
                 user_id: getUserId()
             });
+
+            await activateProgressBar()
+
 
             fetch(`${APIUrl}/payment/get`, {
                 method: "POST",
@@ -510,8 +553,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 }
 
+
                 mainLoading.classList.add("d-none");
                 processPayment()
+                console.log("here1")
                 processClearInputsOnSwitch()
             } catch (error) {
                 showError(`Ошибка запроса: ${error}`);

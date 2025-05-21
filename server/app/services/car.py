@@ -1,7 +1,7 @@
 import requests
 import aiohttp
 import asyncio
-import os
+import os, json
 from core.config import settings
 
 from services.telegram import send_proxy_error_request
@@ -14,8 +14,6 @@ proxies = {
 
 
 import aiohttp
-
-#Ошибка запроса в get_auth_token: Cannot connect to host 45.32.56.105:10020 ssl:default [Connect call failed ('45.32.56.105', 10020)]
 
 async def get_auth_token(login, password) -> str:
     headers = {
@@ -33,23 +31,38 @@ async def get_auth_token(login, password) -> str:
         "params": {"email": login, "password": password},
     }
 
+
     async with aiohttp.ClientSession() as session:
         try:
             async with session.post(url, json=data, headers=headers, proxy=settings.proxy) as response:
-                response_json = await response.json()
+                response_text = await response.text()
+                try:
+                    response_json = json.loads(response_text)
+                except json.JSONDecodeError:
+                    raise aiohttp.ContentTypeError(request_info=response.request_info, history=response.history, message="Invalid JSON")
+
+                response_error = response_json.get("error")
+
+                if response_error:
+                    raise Exception(str(response_error))
+
                 return response_json.get("result", {}).get("token", "")
+
         except aiohttp.ContentTypeError:
-            send_proxy_error_request(f"Ошибка JSON в get_auth_token: {await response.text()}")
+            send_proxy_error_request(f"Ошибка JSON в get_auth_token: {response_text}")
+        except aiohttp.ClientConnectionError:
+            send_proxy_error_request("Ошибка соединения с прокси в get_auth_token: Невозможно подключиться к прокси. (Проверьте прокси)")
         except aiohttp.ClientError as e:
             send_proxy_error_request(f"Ошибка запроса в get_auth_token: {e}")
-        except aiohttp.ClientConnectionError:
-            send_proxy_error_request(f"Ошибка соединения с прокси в get_auth_token: Невозможно подключиться к прокси. (Проверьте прокси)")
-        except aiohttp.ClientTimeoutError:
-            send_proxy_error_request(f"Ошибка таймаута при подключении через прокси в get_auth_token: Превышен лимит времени. (Проверьте прокси)")
+        except Exception as e:
+            send_proxy_error_request(f"Ошибка запроса в get_auth_token: {e}")
+
     return ""
+
 
 async def create_car_report_uuid(car_type: str, query: str) -> str | None:
     ACCESS_TOKEN = await get_auth_token(settings.api_login, settings.api_password)
+    print("ACCESS_TOKEN", ACCESS_TOKEN)
     if not ACCESS_TOKEN:
         return None
 

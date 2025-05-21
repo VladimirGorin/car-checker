@@ -12,13 +12,13 @@ class Settings(BaseSettings):
     api_login: str = ""
 
     yookassa_api: str = "https://api.yookassa.ru/v3/payments"
-    payment_return_url: str = "http://0.0.0.0:8000"
+    payment_return_url: str = "https://check-car.pro/api" # https://check-car.pro/api http://0.0.0.0:8000
     shop_id: str = ""
     secret_token: str = ""
 
     telegram_bot_token: str = ""
 
-    proxy: str = "http://Z3wL:r3he@49.13.80.65:23877"
+    proxy: str = "http://cloakedheadland160712:iarGKEE8o5T4@94.142.141.165:14907"
 
 
     class Config:

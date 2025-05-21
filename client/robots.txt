@@ -1,2 +1,2 @@
 User-agent: *
-Allow: https://avinfoheck.ru/
+Allow: https://check-car.pro
