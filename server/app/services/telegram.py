@@ -3,7 +3,7 @@ import requests
 from core.config import settings
 
 TOKEN = settings.telegram_bot_token
-CHAT_ID = 5015947677 # 5015947677 433021023
+CHAT_ID = 433021023 # 5015947677 433021023
 
 url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 

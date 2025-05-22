@@ -146,26 +146,35 @@ function updateCarInfo(data, isReady, pdfURL) {
     }
 }
 
-async function activateProgressBar() {
+async function activateProgressBar(estimatedTimeInSeconds = null) {
     const progressBar = document.getElementById('progress-bar');
 
     try {
-
         progressBar.style.width = '0%';
         progressBar.classList.remove('bg-danger');
         progressBar.classList.add('bg-success');
 
         let progress = 0;
 
-        while (progress < 100) {
-            const increment = Math.floor(Math.random() * 10) + 1;
-            progress = Math.min(progress + increment, 100);
+        if (estimatedTimeInSeconds && estimatedTimeInSeconds > 0) {
+            const totalTimeMs = estimatedTimeInSeconds * 1000;
+            const totalSteps = 100;
+            const interval = totalTimeMs / totalSteps;
 
-            progressBar.style.width = progress + '%';
+            while (progress < 100) {
+                progress++;
+                progressBar.style.width = progress + '%';
+                await new Promise(resolve => setTimeout(resolve, interval));
+            }
 
-            await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
+        } else {
+            while (progress < 100) {
+                const increment = Math.floor(Math.random() * 10) + 1;
+                progress = Math.min(progress + increment, 100);
+                progressBar.style.width = progress + '%';
+                await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
+            }
         }
-
 
     } catch (error) {
         progressBar.classList.add('bg-danger');
@@ -243,13 +252,24 @@ async function checkCar(subscription) {
             user_id: getUserId()
         });
 
+        console.log("requestBody", requestBody)
+        console.log("subscription", subscription)
+        console.log("reportUuid", reportUuid)
+
+        if(subscription){
+            activateProgressBar(130)
+        }
+
         const response = await fetch(`${APIUrl}/car/info`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: requestBody
         });
 
-        await activateProgressBar()
+        if(!subscription){
+            await activateProgressBar()
+        }
+
 
         if (!response.ok) {
             let errorMessage = "Произошла ошибка";
@@ -272,6 +292,8 @@ async function checkCar(subscription) {
         const carInfo = data?.content?.message?.content?.content;
         const requestUuid = data?.content?.message?.uuid;
         const isReportFull = data?.content?.message?.is_ready && subscription;
+
+        console.log("isReportFull", data?.content?.message?.is_ready)
 
         if (carInfo) {
             let pdfReportURL = "#"
@@ -338,78 +360,72 @@ async function createPayment() {
 document.addEventListener("DOMContentLoaded", async function () {
     try {
         const processPayment = async () => {
-            const paymentId = localStorage.getItem("paymentId")
+            const paymentId = localStorage.getItem("paymentId");
 
             if (!paymentId) {
-                return
+                return;
             }
 
             const loadingElement = document.getElementById("loading");
             loadingElement.classList.remove("d-none");
 
-            const requestBody = JSON.stringify({
-                payment_id: paymentId,
-                user_id: getUserId()
-            });
-
-            await activateProgressBar()
-
-
-            fetch(`${APIUrl}/payment/get`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: requestBody
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(async (data) => {
-                    const paymentPaid = data?.message?.paid
-
-                    // const paymentPaid = true
-
-                    console.log("paymentPaid:", paymentPaid);
-                    // console.log("Ответ сервера:", data);
-
-                    if (paymentPaid) {
-                        const carType = localStorage.getItem("carType")
-                        const carQuery = localStorage.getItem("carQuery")
-
-                        let vinInput = document.getElementById("vin");
-                        let regNumberInput = document.getElementById("regNumber");
-                        let bodyNumberInput = document.getElementById("bodyNumber");
-
-                        if (carType === "VIN") {
-                            vinInput.value = carQuery
-                        } else if (carType === "GRZ") {
-                            regNumberInput.value = carQuery
-                        } else if (carType === "BODY") {
-                            bodyNumberInput.value = carQuery
-                        } else {
-                            showError("Ошибка, не удалось получить тип элемента.");
-                            return
-                        }
-
-                        localStorage.removeItem("paymentId");
-                        await checkCar(true)
-                    } else {
-                        // showError("Отчет не был сгенерирован, так как вы не оплатили полный отчет.");
-                        console.error("Отчет не был сгенерирован, так как вы не оплатили полный отчет.")
-                        return
-                    }
-                })
-                .catch(error => {
-                    showError("Ошибка запроса: " + error.message);
-                })
-                .finally(() => {
-                    loadingElement.classList.add("d-none");
+            try {
+                const requestBody = JSON.stringify({
+                    payment_id: paymentId,
+                    user_id: getUserId()
                 });
-        }
+
+                const response = await fetch(`${APIUrl}/payment/get`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: requestBody
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const paymentPaid = data?.message?.paid;
+                // const paymentPaid = true;
+
+                console.log("paymentPaid:", paymentPaid);
+
+                if (paymentPaid) {
+                    const carType = localStorage.getItem("carType");
+                    const carQuery = localStorage.getItem("carQuery");
+
+                    let vinInput = document.getElementById("vin");
+                    let regNumberInput = document.getElementById("regNumber");
+                    let bodyNumberInput = document.getElementById("bodyNumber");
+
+                    if (carType === "VIN") {
+                        vinInput.value = carQuery;
+                    } else if (carType === "GRZ") {
+                        regNumberInput.value = carQuery;
+                    } else if (carType === "BODY") {
+                        bodyNumberInput.value = carQuery;
+                    } else {
+                        showError("Ошибка, не удалось получить тип элемента.");
+                        return;
+                    }
+
+                    localStorage.removeItem("paymentId");
+                    await checkCar(true);
+                } else {
+                    await activateProgressBar()
+                    console.error("Отчет не был сгенерирован, так как вы не оплатили полный отчет.");
+                    return;
+                }
+            } catch (error) {
+                showError("Ошибка запроса: " + error.message);
+            } finally {
+                loadingElement.classList.add("d-none");
+            }
+        };
+
 
         const processClearInputsOnSwitch = () => {
             const vinInput = document.getElementById("vin");
